@@ -6,7 +6,9 @@ export const baseUrlApi = 'http://localhost:5001/';
 //Url Routes for Components
 export const SiteRutas = {
     Home: '/Home',
-    Login: '/Login'
+    Login: '/Login',
+    Poliza : '/Poliza',
+    PolizaEditor: '/PolizaEditor'
 };
 
 //Request Header
