@@ -1,0 +1,104 @@
+body {
+    background: #F2F6FB;
+    font-family: 'Montserrat';
+}
+.layout-container {
+    background: url(../../assets/images/bg.jpeg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    position: fixed;
+    top: 0;
+    left: 0;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.login-info {
+    background: #F2F6FB;
+    padding: 40px;
+    position: fixed;
+    width: 40%;
+    margin: 0;
+    padding: 40px;
+    height: 100%;
+    right: 0;
+}
+
+.login-info p.title {
+    text-align: center;
+    margin-top: 45%;
+    margin-bottom: 20px;
+    font-size: 25px;
+    color: #848EA8;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+.login-info p.titleGap {
+    text-align: center;
+    font-size: 25px;
+    color: #848EA8;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+
+.login-info input.login[type="text"], input.login[type="password"] {
+    margin-top: 10px;
+    margin-bottom: 25px;
+    display: block;
+    width: 100%;
+    height: 45px;
+    padding: 6px 22px;
+    font-size: 18px;
+    letter-spacing: 1px;
+    line-height: 1.42857143;
+    color: #333;
+    background-color: transparent;
+    background-image: none;
+    border: 1px solid #848EA8;
+    border-radius: 50px;
+    -webkit-box-shadow: 0 0 0 0;
+    box-shadow: 0 0 0 0;
+    
+}
+
+.login-info input.login[type="text"]::placeholder, input.login[type="password"]::placeholder {
+    color: #848EA8;
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.login-info .btn-iniciar {
+    background: #00BBE2;
+    padding: 10px 30px;
+    font-size: 1.1em;
+    margin-bottom: 15px;
+    margin-top: 25px;
+    color: #fff;
+    width: 100%;
+    border-radius: 50px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.login-info .btn-iniciar:hover {
+    background: #042A6B;
+}
+
+@media only screen and (max-width: 600px) {
+ 
+    .login-info{
+        width: 100%;
+    }
+
+  }

@@ -29,17 +29,17 @@ namespace PruebaSeguros.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(string user, string pass)
+        public IActionResult Login([FromBody] SeguridadLogin login)
         {
             IActionResult response = Unauthorized();
             try
             {
 
-            SeguridadLogin login = new SeguridadLogin
-            {
-                Usuario = user,
-                Pass = pass
-            };
+            //SeguridadLogin login = new SeguridadLogin
+            //{
+            //    Usuario = user,
+            //    Pass = pass
+            //};
             
             SeguridadLogin SeguridadLoginencontrado = AutenticarSeguridadLogin(login);
 
@@ -76,7 +76,7 @@ namespace PruebaSeguros.Controllers
                 issuer: _config["Jwt:Issuer"],
                 audience: _config["Jwt:Issuer"],
                 claims,
-                expires: DateTime.Now.AddMinutes(120),
+                expires: DateTime.Now.AddMinutes(10),
                 signingCredentials: credentiasl
 
                 );
