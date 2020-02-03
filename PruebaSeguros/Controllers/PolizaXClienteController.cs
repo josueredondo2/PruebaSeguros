@@ -38,5 +38,62 @@ namespace PruebaSeguros.Controllers
                 return StatusCode(500, "Error interno del server: " + ex.Message);
             }
         }
+
+
+        [HttpPost]
+        public ActionResult Post([FromBody] PolizaXCliente value)
+        {
+            try
+            {
+                PolizaXCliente Existe = unitOfWork.PolizaXCliente.Find(x => x.ClienteCedula.Equals(value.ClienteCedula) && x.IdPoliza.Equals(value)).FirstOrDefault();
+
+                if (Existe!= null)
+                {
+                    return Ok(new DTOResponse { Correcto = false, Dato = "El cliente ya tiene asignada la póliza seleccionada." });
+                }
+                unitOfWork.PolizaXCliente.Add(value);
+                int resultado = unitOfWork.Complete();
+                if (resultado == 1)
+                {
+                    return Ok(new DTOResponse { Correcto = true });
+                }
+                else
+                {
+                    return Ok(new DTOResponse { Correcto = false, Dato = "No se inserto objeto" });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                //LogException(e);
+                return Ok(new DTOResponse { Correcto = false, Dato = ex.InnerException.Message });
+            }
+        }
+
+        // DELETE: api/ApiWithActions/5
+        [HttpPost("DeletePost")]
+        public ActionResult DeletePost(PolizaXCliente value)
+        {
+            try
+            {
+            
+                unitOfWork.PolizaXCliente.Remove(value);
+                int resultado = unitOfWork.Complete();
+                if (resultado == 1)
+                {
+                    return Ok(new DTOResponse { Correcto = true });
+                }
+                else
+                {
+                    return Ok(new DTOResponse { Correcto = false, Dato = "No se elimino objeto" });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                //LogException(e);
+                return Ok(new DTOResponse { Correcto = false, Dato = ex.InnerException.Message });
+            }
+        }
     }
 }

@@ -132,7 +132,7 @@ export class PolizaEditorPage extends Component {
 
   async InsertarPoliza() {
     if (this.validarCampos()) {
-      const response = await InsertarPoliza(this.crearObjeto());
+      const response = await InsertarPoliza(this.CrearObjeto());
       if (response.ok) {
         response.json().then(data => {
           if (data.correcto === true) {
@@ -153,7 +153,7 @@ export class PolizaEditorPage extends Component {
     }
   }
 
-  crearObjeto = () => {
+  CrearObjeto = () => {
     const {
       IdPoliza,
       Nombre,

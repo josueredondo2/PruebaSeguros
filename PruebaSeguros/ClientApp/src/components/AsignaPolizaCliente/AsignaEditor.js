@@ -6,7 +6,7 @@ import BootstrapTable from "react-bootstrap-table-next";
 
 import { SiteRutas } from "../../request/PathConfig";
 // import { GetPolizas, EliminarPoliza } from "../../request/PolizaRequest";
-import { GetPolizasXClientes } from "../../request/PolizaXCliente";
+import { GetPolizasXClientes,InsertarPolizaXCliente,EliminarPolizaXCliente } from "../../request/PolizaXCliente";
 import { Notification } from "../../components/Util/Notification/Notification";
 import Mensaje from "../../components/Util/Notification/Mensajes";
 
@@ -21,7 +21,8 @@ const { SearchBar } = Search;
 
 export class AsignaEditorPage extends Component {
   state = {
-    selectedCliente: null,
+    selectedClientePoliza: null,
+    selectedPolizaNueva: null,
     loading: false,
     registros: [],
     clienteCedula:0
@@ -92,10 +93,74 @@ console.log(this.state.clienteCedula);
       }
     }
 
+    async InsertarPolizaXCliete() {
+        const response = await InsertarPolizaXCliente(this.crearObjeto());
+        if (response.ok) {
+          response.json().then(data => {
+            if (data.correcto === true) {
+              Notification.success("Guardado Correctamente");
+              this.CargarRegistros();
+              // this.props.history.push(SiteRutas.Poliza);
+            } else {
+              Notification.error(data.dato);
+            }
+          });
+        } else {
+          if (response.status === 401) {
+            Notification.error("El token de conexión vencio.");
+            this.props.history.push("/");
+            return;
+          }
+          Notification.error("Error interno.");
+        }
+      
+    }
+
+    async EliminarPolizaXCliente(pRegistro) {
+      const resultado = await Mensaje.confirmacion(
+        "Confirmación",
+        `¿ Está seguro que desea eliminar el registro con código ${pRegistro.idPoliza}?`,
+        "Eliminar"
+      );
+      if (resultado) {
+        const response = await EliminarPolizaXCliente(this.state.clienteCedula,pRegistro.id);
+        if (response.ok) {
+          response.json().then(data => {
+            if (data.correcto === true) {
+            //   const indiceRegistro = this.state.registros.findIndex(
+            //     item => item.idPoliza === pRegistro.idPoliza
+            //   );
+            //   if (indiceRegistro > -1) {
+            //     let registros = [...this.state.registros];
+            //     registros.splice(indiceRegistro, 1);
+            //     this.setState({ registros });
+            //   }
+              Notification.success("Eliminado Correctamente");
+              this.CargarRegistros();
+            } else {
+              Notification.error(data.dato);
+            }
+          });
+        } else {
+          if (response.status === 401) {
+            Notification.error("El token de conexión vencio.");
+            this.props.history.push("/");
+            return;
+          }
+          Notification.error("Error interno.");
+        }
+      }
+    }
+
+    CrearObjeto = () => {
+return {};
+
+    }
+
     onClickAsignar = () => {
       const { selectedCliente } = this.state;
       if (selectedCliente) {
-        this.AsignarPoliza(selectedCliente);
+        // this.AsignarPoliza(selectedCliente);
       } else {
         Mensaje.advertencia(
           "Por favor, seleccione el registro que desea eliminar."
@@ -160,19 +225,53 @@ console.log(this.state.clienteCedula);
               </h2>
             </div>
             <div className="col-8 text-right">
-              <button
-                className="btn info"
-                  onClick={this.onClickAsignar}
-              >
-                Asignar Póliza a Cliente
-              </button>
             </div>
           </div>
         </section>
 
         <section className="main">
           <div className="row">
-            <div className="col">
+            <div className="col-6">
+            <button
+                className="btn info"
+                  onClick={this.onClickAsignar}
+              >
+                Eliminar Póliza a Cliente
+              </button>
+              <ToolkitProvider
+                keyField="clienteCedula"
+                data={this.state.registros}
+                columns={columns}
+                search
+              >
+                {props => (
+                  <div>
+                    <SearchBar {...props.searchProps} placeholder={"Buscar Cliente"} />
+
+                    <BootstrapTable
+                      {...props.baseProps}
+                      striped={true}
+                      hover={true}
+                      selectRow={selectRow}
+                      rowEvents={rowEvents}
+                      className={
+                        "table table-striped table-hover table-bordered mt-5"
+                      }
+                      noDataIndication="No se encontraron registros."
+                      bootstrap4
+                      pagination={paginationFactory()}
+                    />
+                  </div>
+                )}
+              </ToolkitProvider>
+            </div>
+            <div className="col-6">
+            <button
+                className="btn info"
+                  onClick={this.onClickAsignar}
+              >
+                Asignar Póliza a Cliente
+              </button>
               <ToolkitProvider
                 keyField="clienteCedula"
                 data={this.state.registros}
