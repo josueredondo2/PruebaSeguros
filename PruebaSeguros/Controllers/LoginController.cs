@@ -35,11 +35,6 @@ namespace PruebaSeguros.Controllers
             try
             {
 
-            //SeguridadLogin login = new SeguridadLogin
-            //{
-            //    Usuario = user,
-            //    Pass = pass
-            //};
             
             SeguridadLogin SeguridadLoginencontrado = AutenticarSeguridadLogin(login);
 
@@ -96,7 +91,7 @@ namespace PruebaSeguros.Controllers
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             IList<Claim> claim = identity.Claims.ToList();
-            var userName = claim[0].Value;
+            var userName = claim[0].Value;  
             return "Bienvenido : " + userName;
         }
 

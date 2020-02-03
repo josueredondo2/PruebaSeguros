@@ -5,7 +5,7 @@ import BootstrapTable from "react-bootstrap-table-next";
 // import ToolkitProvider from 'react-bootstrap-table2-toolkit';
 
 import { SiteRutas } from "../../request/PathConfig";
-// import { ObtenerListaNaucaRequest, EliminarNaucaRequest, ObtenerListaNaucaFiltradosRequest} from '../../request/NaucaRequest';
+import { GetPolizas } from "../../request/PolizaRequest";
 // import { Notification } from '../../components/Util/Notification/Notification';
 // import Mensaje from '../../components/Util/Notification/Mensajes';
 
@@ -18,26 +18,26 @@ export class PolizaPage extends Component {
     loading: false,
     registros: []
   };
-  // filtrarRegistro = this.filtrarRegistro.bind(this);
 
   componentDidMount() {
-    // this.cargarRegistros();
+    this.CargarRegistros();
   }
 
-  // async cargarRegistros() {
-  //     this.setState({ loading: true });
+  async CargarRegistros() {
+    this.setState({ loading: true });
 
-  //     const response = await ObtenerListaNaucaRequest(this.props.usuario.token);
-  //     if (response.exitoso) {
-  //         this.setState({
-  //             loading: false,
-  //             registros: response.objeto || []
-  //         });
-  //     }
-  //     else {
-  //         Notification.error(response.mensajeRespuesta);
-  //     }
-  // }
+    const response = await GetPolizas();
+    if (response.ok) {
+      response.json().then(data => {
+        this.setState({
+          loading: false,
+          registros: data
+        });
+      });
+    } else {
+      Notification.error(response.mensajeRespuesta);
+    }
+  }
 
   //  async filtrarRegistro(event) {
 
@@ -96,17 +96,11 @@ export class PolizaPage extends Component {
   //     }
   // }
 
-  // onSelectedRowNauca = (row, isSelect, rowIndex, e) => {
-  //     this.setState({ selectedNauca: isSelect ? row : null });
-  // }
+  onSelectedRowNauca = (row, isSelect, rowIndex, e) => {
+    this.setState({ selectedPoliza: isSelect ? row : null });
+  };
 
   render() {
-    const paginacionOpciones = {
-      sizePerPage: 5,
-      hideSizePerPage: true,
-      hidePageListOnlyOnePage: true
-    };
-
     // const MySearch = (props) => {
     //     let input;
     //     const handleChange = () => {
@@ -117,19 +111,26 @@ export class PolizaPage extends Component {
     //     );
     // };
 
-    const products = [{ id: 1, text: "Hola" }];
     const columns = [
       {
-        dataField: "id",
-        text: "Product ID"
+        dataField: "idPoliza",
+        text: "Id"
       },
       {
-        dataField: "name",
-        text: "Product Name"
+        dataField: "nombre",
+        text: "Nombre"
       },
       {
-        dataField: "price",
-        text: "Product Price"
+        dataField: "descripcion",
+        text: "Descripción"
+      },
+      {
+        dataField: "periodoCoberturaMeses",
+        text: "Meses Cobertura"
+      },
+      {
+        dataField: "precioPoliza",
+        text: "Precio"
       }
     ];
 
@@ -137,18 +138,18 @@ export class PolizaPage extends Component {
       mode: "radio",
       clickToSelect: true,
       hideSelectColumn: true,
-      bgColor: "rgba(0,0,0,.075)"
-      // ,onSelect: this.onSelectedRowNauca
+      // bgColor: "rgba(0,0,0,.075)",
+      onSelect: this.onSelectedRowNauca
     };
 
-    // const rowEvents = {
-    //     onDoubleClick: (e, row, rowIndex) => {
-    //         this.props.history.push({
-    //             pathname: SiteRutas.NaucaEditor,
-    //             state: { nauca: row }
-    //         });
-    //     }
-    // }
+    const rowEvents = {
+      onDoubleClick: (e, row, rowIndex) => {
+        this.props.history.push({
+          pathname: SiteRutas.PolizaEditor,
+          state: { poliza: row }
+        });
+      }
+    };
 
     return (
       <Fragment>
@@ -183,11 +184,13 @@ export class PolizaPage extends Component {
           <div className="row">
             <div className="col">
               <BootstrapTable
-                keyField="id"
-                data={products}
+                keyField="idPoliza"
+                data={this.state.registros}
                 columns={columns}
                 striped={true}
                 hover={true}
+                selectRow={selectRow}
+                rowEvents={rowEvents}
                 className={
                   "table table-striped table-hover table-bordered mt-5"
                 }

@@ -16,10 +16,16 @@ namespace PruebaSeguros.RepositoryPattern.Persistance
         {
             _context = context;
             SeguridadLogins = new SeguridadLoginRepository(_context);
+            PolizaEncabezados = new PolizaEncabezadoRepository(_context);
+            TipoPoliza = new TipoPolizaRepository(_context);
+            TipoRiesgo = new TipoRiesgoRepository(_context);
 
         }
 
         public ISeguridadLoginRepository SeguridadLogins { get; private set; }
+        public IPolizaEncabezadoRepository PolizaEncabezados { get; private set; }
+        public ITipoPolizaRepository TipoPoliza { get; private set; }
+        public ITipoRiesgoRepository TipoRiesgo { get; private set; }
 
 
         public int Complete()

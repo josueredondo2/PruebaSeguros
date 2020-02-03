@@ -5,6 +5,7 @@ import { Home } from './components/Home';
 import { FetchData } from './components/FetchData';
 import {LoginPage} from './components/Login/LoginPage'
 import {PolizaPage} from './components/Poliza/PolizaPage'
+import {PolizaEditorPage} from './components/Poliza/PolizaEditor'
 
 import './custom.css'
 
@@ -19,6 +20,7 @@ export default class App extends Component {
         <Route exact path='/Home' component={Home} />
         <Route path='/fetch-data' component={FetchData} />
         <Route path='/Poliza' component={PolizaPage} />
+        <Route path='/PolizaEditor' component={PolizaEditorPage} />
       </Layout>
       </Switch>
     );

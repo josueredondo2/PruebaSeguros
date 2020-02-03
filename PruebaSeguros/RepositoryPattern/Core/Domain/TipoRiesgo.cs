@@ -11,7 +11,7 @@ namespace PruebaSeguros.RepositoryPattern.Core.Domain
         }
 
         public int IdRiesgo { get; set; }
-        public string IdNombre { get; set; }
+        public string Nombre { get; set; }
 
         public virtual ICollection<PolizaEncabezado> PolizaEncabezado { get; set; }
     }

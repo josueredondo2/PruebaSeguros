@@ -185,15 +185,15 @@ namespace PruebaSeguros.RepositoryPattern.Core.Domain
 
                 entity.ToTable("tipo_riesgo");
 
-                entity.HasIndex(e => e.IdNombre)
+                entity.HasIndex(e => e.Nombre)
                     .HasName("IX_tipo_riesgo")
                     .IsUnique();
 
                 entity.Property(e => e.IdRiesgo).HasColumnName("id_riesgo");
 
-                entity.Property(e => e.IdNombre)
+                entity.Property(e => e.Nombre)
                     .IsRequired()
-                    .HasColumnName("id_nombre")
+                    .HasColumnName("nombre")
                     .HasMaxLength(50)
                     .IsUnicode(false);
             });

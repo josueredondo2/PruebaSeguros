@@ -22,7 +22,9 @@ export  class LoginPage extends Component {
         // response = { ...response, respuesta: response.respuesta };
       if (response.ok) {
         Notification.success("Ingreso Correcto");
-        this.SaveToken(response.json());
+        response.json().then(data => {
+          this.SaveToken(data.token);
+        });
         this.props.history.push(SiteRutas.Home);
       }
       else {

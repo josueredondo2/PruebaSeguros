@@ -8,6 +8,9 @@ namespace PruebaSeguros.RepositoryPattern.Core
     public interface IUnitOfWork : IDisposable
     {
         ISeguridadLoginRepository SeguridadLogin { get; }
+        IPolizaEncabezadoRepository PolizaEncabezado { get; }
+        ITipoPolizaRepository TipoPoliza{ get; }
+        ITipoRiesgoRepository TipoRiesgo{ get; }
         int Complete();
     }
 }
