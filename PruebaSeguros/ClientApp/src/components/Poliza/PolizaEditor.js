@@ -8,8 +8,7 @@ import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import Select from "react-select";
 import { GetTipoPolizas } from "../../request/TipoPolizaRequest";
 import { GetTipoRiesgo } from "../../request/TipoRiesgoRequest";
-import { InsertarPoliza } from "../../request/PolizaRequest";
-import { parse } from "@fortawesome/fontawesome-svg-core";
+import { InsertarPoliza, ActualizarPoliza } from "../../request/PolizaRequest";
 
 export class PolizaEditorPage extends Component {
   state = {
@@ -23,7 +22,7 @@ export class PolizaEditorPage extends Component {
     TipoPoliza: 0,
     lstRiesgo: [],
     lstTipoPoliza: [],
-    selectedRiesgo: 0,
+    selectedTipoRiesgo: 0,
     selectedTipoPoliza: 0
   };
 
@@ -34,19 +33,21 @@ export class PolizaEditorPage extends Component {
   }
 
   SetearPropiedades = () => {
-    let poliza = this.props.location.state.poliza;
-console.log(poliza)
-    if (poliza !== undefined) {
-      this.setState({
-        IdPoliza: poliza.idPoliza,
-        Nombre: poliza.nombre,
-        Descripcion: poliza.descripcion,
-        PeriodoCoberturaMeses: poliza.periodoCoberturaMeses,
-        PrecioPoliza: poliza.precioPoliza,
-        TipoRiesgo: poliza.tipoRiesgo,
-        TipoPoliza: poliza.tipoPoliza,
-        esNuevo: false
-      });
+    if (this.props.location.state !== undefined) {
+      let poliza = this.props.location.state.poliza;
+      console.log(poliza)
+      if (poliza !== undefined) {
+        this.setState({
+          IdPoliza: poliza.idPoliza,
+          Nombre: poliza.nombre,
+          Descripcion: poliza.descripcion,
+          PeriodoCoberturaMeses: poliza.periodoCoberturaMeses,
+          PrecioPoliza: poliza.precioPoliza,
+          selectedTipoRiesgo: poliza.tipoRiesgo,
+          TipoPoliza: poliza.tipoPoliza,
+          esNuevo: false
+        });
+      }
     }
   };
   async CargarTipoPolizas() {
@@ -64,9 +65,10 @@ console.log(poliza)
         this.setState({
           loading: false,
           lstTipoPoliza: lstTipoPolizas,
-          selectedTipoPoliza :lstTipoPolizas.find(element => element.value === this.state.TipoPoliza)
+          selectedTipoPoliza: lstTipoPolizas.find(
+            element => element.value === this.state.TipoPoliza
+          )
         });
-        
       });
     } else {
       if (response.status === 401) {
@@ -88,10 +90,13 @@ console.log(poliza)
             label: obj.nombre
           };
         });
+
         this.setState({
           loading: false,
           lstTipoRiesgo: lstTipoRiesgo,
-          selectedTipoPoliza :lstTipoRiesgo.find(element => element.value === this.state.tipoRiesgo)
+          selectedTipoRiesgo: lstTipoRiesgo.find(
+            element => element.value === this.state.TipoRiesgo
+          )
         });
       });
     } else {
@@ -102,20 +107,28 @@ console.log(poliza)
     }
   }
 
-  // async actualizarNauca() {
-  //     let nauca = { ...this.state.nauca };
-  //     if (this.validarCampos(nauca)) {
-
-  //         nauca = this.crearObjeto(nauca);
-  //         const response = await ActualizarNaucaRequest(this.props.usuario.token, nauca);
-  //         if (response.exitoso) {
-  //             Notification.success(response.mensajeRespuesta);
-  //         }
-  //         else {
-  //             Notification.error(response.poliza_update.mensajeRespuesta);
-  //         }
-  //     }
-  // }
+  async ActualizarPoliza() {
+    if (this.validarCampos()) {
+      const response = await ActualizarPoliza(this.crearObjeto());
+      if (response.ok) {
+        response.json().then(data => {
+          if (data.correcto === true) {
+            Notification.success("Actualizado Correctamente");
+            this.props.history.push(SiteRutas.Poliza);
+          } else {
+            Notification.error(data.dato);
+          }
+        });
+      } else {
+        if (response.status === 401) {
+          Notification.error("El token de conexión vencio.");
+          this.props.history.push("/");
+          return;
+        }
+        Notification.error("Error interno.");
+      }
+    }
+  }
 
   async InsertarPoliza() {
     if (this.validarCampos()) {
@@ -139,23 +152,6 @@ console.log(poliza)
       }
     }
   }
-
-  // limpiarControles = () => {
-  //     this.setState({
-  //         nauca: {
-  //             poliza_Id: '',
-  //             poliza_Nombre: '',
-  //             poliza_Advalorem: 0,
-  //             poliza_Selectivo: 0,
-  //             poliza_Ley6966: 0,
-  //             poliza_Sobre_Tasa: 0,
-  //             poliza_Ventas: 0,
-  //             poliza_Otros: 0,
-  //             poliza_Tarifa: 0,
-  //             poliza_PedidoEspecial: false
-  //         }
-  //     });
-  // }
 
   crearObjeto = () => {
     const {
@@ -186,29 +182,13 @@ console.log(poliza)
     this.setState({ [name]: value });
   };
 
-  // onChangeCheckBox = event => {
-  //     const { name, checked } = event.currentTarget;
-  //     this.setState({ nauca: { ...this.state.nauca, [name]: checked } });
-  // }
-
   onClickGuardar = event => {
     if (this.state.esNuevo) {
       this.InsertarPoliza();
     } else {
-      //   this.actualizarNauca();
+      this.ActualizarPoliza();
     }
   };
-
-  // calcularTarifa = () => {
-  //     const porcentaje = 100;
-  //     const advalorem = parsearValorFloat(this.state.nauca.poliza_Advalorem) / porcentaje;
-  //     const selectivo = parsearValorFloat(this.state.nauca.poliza_Selectivo) / porcentaje;
-  //     const ley = parsearValorFloat(this.state.nauca.poliza_Ley6966) / porcentaje;
-
-  //     const montoTarifa = (advalorem * selectivo + advalorem + selectivo + ley) + 1;
-
-  //     return montoTarifa.toFixed(decimalesPorDefecto);
-  // }
 
   validarCampos = () => {
     const {
@@ -216,7 +196,7 @@ console.log(poliza)
       Descripcion,
       PeriodoCoberturaMeses,
       PrecioPoliza,
-      selectedRiesgo,
+      selectedTipoRiesgo,
       selectedTipoPoliza
     } = this.state;
 
@@ -251,7 +231,7 @@ console.log(poliza)
       Mensaje.advertencia("Por favor ingrese un valor valido tipo de poliza");
       return false;
     }
-    if (selectedRiesgo === 0) {
+    if (selectedTipoRiesgo === 0) {
       Mensaje.advertencia("Por favor ingrese un valor valido tipo de Riesgo");
       return false;
     }
@@ -264,7 +244,7 @@ console.log(poliza)
   };
 
   HandleChangeTipoRiesgo = selectedOption => {
-    this.setState({ selectedRiesgo: selectedOption });
+    this.setState({ selectedTipoRiesgo: selectedOption });
   };
 
   render() {
@@ -397,7 +377,7 @@ console.log(poliza)
               <div className="form-group">
                 <label id="lblRiesgo">Tipo Riesgo</label>
                 <Select
-                  value={this.state.selectedRiesgo}
+                  value={this.state.selectedTipoRiesgo}
                   onChange={this.HandleChangeTipoRiesgo}
                   options={this.state.lstTipoRiesgo}
                 />

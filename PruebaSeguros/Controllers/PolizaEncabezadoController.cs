@@ -32,13 +32,13 @@ namespace PruebaSeguros.Controllers
         {
             try
             {
-                return Ok(unitOfWork.PolizaEncabezados.GetAll() );
-                
+                return Ok(new DTOResponse { Correcto = true, Dato = unitOfWork.PolizaEncabezados.GetAll() } );
+
             }
             catch (Exception ex)
             {
                 //LogException(e);
-                return StatusCode(500, "Error interno del server: " + ex.Message);
+                return Ok(new DTOResponse { Correcto = false, Dato = ex.InnerException.Message });
             }
         }
 
@@ -55,6 +55,14 @@ namespace PruebaSeguros.Controllers
         {
             try
             {
+                var tipoRiesgo = unitOfWork.TipoRiesgo.Get(value.TipoRiesgo);
+                if (tipoRiesgo.Nombre.Equals("Alto"))
+                {
+                    if (!unitOfWork.TipoPoliza.ValidaReglaNegocio(value.TipoPoliza))
+                    {
+                        return Ok(new DTOResponse { Correcto = false, Dato = "No se puede guardar una póliza de cobertura mayor a 50% y que su riesgo sea alto." });
+                    }
+                }
                 unitOfWork.PolizaEncabezados.Add(value);
                 int resultado = unitOfWork.Complete();
                 if (resultado == 1)
@@ -75,15 +83,62 @@ namespace PruebaSeguros.Controllers
         }
 
         // PUT: api/PolizaEncabezado/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut]
+        public ActionResult Put([FromBody] PolizaEncabezado value)
         {
+            try
+            {
+                var tipoRiesgo = unitOfWork.TipoRiesgo.Get(value.TipoRiesgo);
+                if (tipoRiesgo.Nombre.Equals("Alto"))
+                {
+                    if (!unitOfWork.TipoPoliza.ValidaReglaNegocio(value.TipoPoliza))
+                    {
+                        return Ok(new DTOResponse { Correcto = false, Dato = "No se puede guardar una póliza de cobertura mayor a 50% y que su riesgo sea alto." });
+                    }
+                }
+                unitOfWork.PolizaEncabezados.Update(value);
+                int resultado = unitOfWork.Complete();
+                if (resultado == 1)
+                {
+                    return Ok(new DTOResponse { Correcto = true });
+                }
+                else
+                {
+                    return Ok(new DTOResponse { Correcto = false, Dato = "No se modifico objeto" });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                //LogException(e);
+                return Ok(new DTOResponse { Correcto = false, Dato = ex.InnerException.Message });
+            }
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult Delete(int id)
         {
+            try
+            {
+                PolizaEncabezado valueDelete = new PolizaEncabezado { IdPoliza = id };
+                unitOfWork.PolizaEncabezados.Remove(valueDelete);
+                int resultado = unitOfWork.Complete();
+                if (resultado == 1)
+                {
+                    return Ok(new DTOResponse { Correcto = true });
+                }
+                else
+                {
+                    return Ok(new DTOResponse { Correcto = false, Dato = "No se elimino objeto" });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                //LogException(e);
+                return Ok(new DTOResponse { Correcto = false, Dato = ex.InnerException.Message });
+            }
         }
     }
 }

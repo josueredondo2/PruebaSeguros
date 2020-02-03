@@ -7,6 +7,8 @@ body {
   background: #F2F6FB;
 }
 
+
+
 .mt4-5{
   margin-top: 2rem!important;
 }
@@ -371,3 +373,9 @@ Responsive Stuff
   }
 }
 
+.text-dark-menu {
+  text-decoration: solid;
+  color: "#042A6B";
+  
+
+}

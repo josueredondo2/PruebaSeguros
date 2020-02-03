@@ -5,9 +5,9 @@ import BootstrapTable from "react-bootstrap-table-next";
 // import ToolkitProvider from 'react-bootstrap-table2-toolkit';
 
 import { SiteRutas } from "../../request/PathConfig";
-import { GetPolizas } from "../../request/PolizaRequest";
-// import { Notification } from '../../components/Util/Notification/Notification';
-// import Mensaje from '../../components/Util/Notification/Mensajes';
+import { GetPolizas, EliminarPoliza } from "../../request/PolizaRequest";
+ import { Notification } from '../../components/Util/Notification/Notification';
+import Mensaje from "../../components/Util/Notification/Mensajes";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -29,87 +29,79 @@ export class PolizaPage extends Component {
     const response = await GetPolizas();
     if (response.ok) {
       response.json().then(data => {
-        this.setState({
-          loading: false,
-          registros: data
-        });
+        if (data.correcto === true) {
+          this.setState({
+            loading: false,
+            registros: data.dato
+          });
+        } else {
+          Notification.error(data.dato);
+        }
       });
     } else {
-      Notification.error(response.mensajeRespuesta);
+      if (response.status === 401) {
+        Notification.error("El token de conexión vencio.");
+        this.props.history.push("/");
+        return;
+      }
+      Notification.error("Error interno.");
+    }
+   
+  }
+
+
+  async EliminarRegistro(pRegistro) {
+    const resultado = await Mensaje.confirmacion(
+      "Confirmación",
+      `¿ Está seguro que desea eliminar el registro con código ${pRegistro.idPoliza}?`,
+      "Eliminar"
+    );
+    if (resultado) {
+      const response = await EliminarPoliza(pRegistro.idPoliza);
+      if (response.ok) {
+        response.json().then(data => {
+          if (data.correcto === true) {
+            const indiceRegistro = this.state.registros.findIndex(
+              item => item.idPoliza === pRegistro.idPoliza
+            );
+            if (indiceRegistro > -1) {
+              let registros = [...this.state.registros];
+              registros.splice(indiceRegistro, 1);
+              this.setState({ registros });
+            }
+            Notification.success("Eliminado Correctamente");
+          } else {
+            Notification.error(data.dato);
+          }
+        });
+      } else {
+        if (response.status === 401) {
+          Notification.error("El token de conexión vencio.");
+          this.props.history.push("/");
+          return;
+        }
+        Notification.error("Error interno.");
+      }
     }
   }
 
-  //  async filtrarRegistro(event) {
+  onClickEliminar = () => {
+    const { selectedPoliza } = this.state;
+    if (selectedPoliza) {
+      this.EliminarRegistro(selectedPoliza);
+    } else {
+      Mensaje.advertencia(
+        "Por favor, seleccione el registro que desea eliminar."
+      );
+    }
+  };
 
-  //     if (event.key !== 'Enter') return;
-
-  //     this.setState({
-  //         loading: true
-  //     });
-
-  //     var filtro =
-  //     {
-  //         Nombre: event.target.value,
-  //         Id_String: event.target.value,
-  //         TipoFiltro: 3
-  //     }
-
-  //     const response = await ObtenerListaNaucaFiltradosRequest(this.props.usuario.token, filtro);
-  //     if (response.exitoso) {
-  //         this.setState({
-  //             loading: false,
-  //             registros: response.objeto || []
-  //         });
-  //     }
-  //     else {
-  //         Notification.error(response.mensajeRespuesta);
-  //     }
-  // }
-
-  // async eliminarRegistro(pRegistro) {
-  //     const resultado = await Mensaje.confirmacion('Confirmación', `¿ Está seguro que desea eliminar el registro con código ${pRegistro.nauca_Id}?`, 'Eliminar');
-  //     if (resultado) {
-  //         const response = await EliminarNaucaRequest(this.props.usuario.token, pRegistro.nauca_Id);
-  //         if (response.exitoso) {
-  //             const indiceRegistro = this.state.registros.findIndex(item => item.nauca_Id === pRegistro.nauca_Id);
-  //             if (indiceRegistro > -1) {
-  //                 let registros = [...this.state.registros];
-  //                 registros.splice(indiceRegistro, 1);
-  //                 this.setState({ registros });
-  //             }
-
-  //             Notification.success(response.mensajeRespuesta);
-  //         }
-  //         else {
-  //             Notification.error('Ocurrio un error al intentar eliminar el registro.');
-  //         }
-  //     }
-  // }
-
-  // onClickEliminar = (event) => {
-  //     const { selectedNauca } = this.state;
-  //     if (selectedNauca) {
-  //         this.eliminarRegistro(selectedNauca);
-  //     }
-  //     else {
-  //         Mensaje.advertencia('Por favor, seleccione el registro que desea eliminar.');
-  //     }
-  // }
-
-  onSelectedRowNauca = (row, isSelect, rowIndex, e) => {
+  onSelectedRow = (row, isSelect, rowIndex, e) => {
     this.setState({ selectedPoliza: isSelect ? row : null });
   };
 
   render() {
-    // const MySearch = (props) => {
-    //     let input;
-    //     const handleChange = () => {
-    //         props.onSearch(input.value);
-    //     };
-    //     return (
-    //         <input className="search2" ref={n => input = n} onKeyDown={this.filtrarRegistro} style={{color:'black'}} name='filtro' onChange={handleChange} type="search" placeholder="Buscar" />
-    //     );
-    // };
+
 
     const columns = [
       {
@@ -138,8 +130,8 @@ export class PolizaPage extends Component {
       mode: "radio",
       clickToSelect: true,
       hideSelectColumn: true,
-      // bgColor: "rgba(0,0,0,.075)",
-      onSelect: this.onSelectedRowNauca
+      bgColor: "rgba(0,0,0,.075)",
+      onSelect: this.onSelectedRow
     };
 
     const rowEvents = {
@@ -167,15 +159,13 @@ export class PolizaPage extends Component {
               </h2>
             </div>
             <div className="col-8 text-right">
-              <button
-                className="btn info"
-                // onClick={this.onClickEliminar}
-              >
+              <button className="btn info" onClick={this.onClickEliminar}>
                 <FontAwesomeIcon icon={faTrash} />
               </button>
               <Link className="btn success" to={SiteRutas.PolizaEditor}>
                 Nueva Póliza
               </Link>
+              
             </div>
           </div>
         </section>

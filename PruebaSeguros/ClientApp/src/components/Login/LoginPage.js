@@ -11,15 +11,16 @@ export  class LoginPage extends Component {
     password: ''
   }
 
+  componentDidMount=()=>{
+    sessionStorage.removeItem('token')
+  }
+
   async AuthenticateUser() {
     const { username, password } = this.state;
     
     if (this.ValidateInputData(username, password)) {
-      console.log(username,password)
 
         var response = await LoginRequest(username, password);
-        console.log(response)
-        // response = { ...response, respuesta: response.respuesta };
       if (response.ok) {
         Notification.success("Ingreso Correcto");
         response.json().then(data => {

@@ -18,5 +18,22 @@ namespace PruebaSeguros.RepositoryPattern.Persistance.Repositories
             get { return Context as TestSegurosContext; }
         }
 
+        public bool ValidaReglaNegocio(int tipo_poliza)
+        {
+            TipoPoliza tipo = new TipoPoliza();
+            tipo = TestSegurosContext.TipoPoliza.Where(x => x.IdTipo.Equals(tipo_poliza)).FirstOrDefault();
+            if (tipo!=null)
+            {
+                if (tipo.PorcentajeCubrimiento > 50)
+                {
+                    return false;
+                }
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

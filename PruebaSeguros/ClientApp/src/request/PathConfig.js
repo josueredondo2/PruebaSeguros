@@ -32,14 +32,6 @@ export const GetResponseBody = pResponse => {
   if (contentType && contentType.indexOf("application/json") !== -1) {
     return pResponse;
   } else {
-    console.log(pResponse);
-    switch (pResponse.status) {
-      case 401:
-        return pResponse;
-        // this.location.reload();
-        break;
-      default:
-        return pResponse;
-    }
+    return pResponse;
   }
 };
