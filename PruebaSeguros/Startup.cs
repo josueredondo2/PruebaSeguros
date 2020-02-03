@@ -48,7 +48,6 @@ namespace PruebaSeguros
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
             options =>
             {
-                
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
