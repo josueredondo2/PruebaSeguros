@@ -18,7 +18,8 @@ namespace PruebaSeguros.RepositoryPattern.Persistance
             SeguridadLogins = new SeguridadLoginRepository(_context);
             PolizaEncabezados = new PolizaEncabezadoRepository(_context);
             TipoPoliza = new TipoPolizaRepository(_context);
-            TipoRiesgo = new TipoRiesgoRepository(_context);
+            Cliente = new ClienteRepository(_context);
+            PolizaXCliente = new PolizaXClienteRepository(_context);
 
         }
 
@@ -26,6 +27,8 @@ namespace PruebaSeguros.RepositoryPattern.Persistance
         public IPolizaEncabezadoRepository PolizaEncabezados { get; private set; }
         public ITipoPolizaRepository TipoPoliza { get; private set; }
         public ITipoRiesgoRepository TipoRiesgo { get; private set; }
+        public IClienteRepository Cliente{ get; private set; }
+        public IPolizaXClienteRepository PolizaXCliente { get; private set; }
 
 
         public int Complete()

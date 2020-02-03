@@ -34,9 +34,7 @@ namespace PruebaSeguros.Controllers
             IActionResult response = Unauthorized();
             try
             {
-
-            
-            SeguridadLogin SeguridadLoginencontrado = AutenticarSeguridadLogin(login);
+                SeguridadLogin SeguridadLoginencontrado = AutenticarSeguridadLogin(login);
 
             if (SeguridadLoginencontrado != null)
             {

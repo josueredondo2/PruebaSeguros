@@ -97,7 +97,7 @@ export class PolizaPage extends Component {
   };
 
   onSelectedRow = (row, isSelect, rowIndex, e) => {
-    this.setState({ selectedPoliza: isSelect ? row : null });
+    this.setState({ selectedPoliza: row});
   };
 
   render() {
@@ -187,20 +187,6 @@ export class PolizaPage extends Component {
                 noDataIndication="No se encontraron registros."
                 bootstrap4
               />
-              {/* <BootstrapTable
-                // selectRow={selectRow}
-                // rowEvents={rowEvents}
-                // pagination={paginationFactory(paginacionOpciones)}
-                noDataIndication="No se encontraron registros."
-                bootstrap4
-                striped={true}
-                hover={true}
-                key='id'
-                data={data}
-                className={
-                  "table table-striped table-hover table-bordered mt-5"
-                }
-              /> */}
             </div>
           </div>
         </section>

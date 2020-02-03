@@ -11,6 +11,8 @@ namespace PruebaSeguros.RepositoryPattern.Core
         IPolizaEncabezadoRepository PolizaEncabezado { get; }
         ITipoPolizaRepository TipoPoliza{ get; }
         ITipoRiesgoRepository TipoRiesgo{ get; }
+        IClienteRepository Cliente{ get; }
+        IPolizaXClienteRepository PolizaXCliente { get; }
         int Complete();
     }
 }
