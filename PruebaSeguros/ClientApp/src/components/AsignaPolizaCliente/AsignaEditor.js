@@ -158,7 +158,7 @@ return {};
     }
 
     onClickAsignar = () => {
-      const { selectedCliente } = this.state;
+      const { selectedCliente } = this.state; 
       if (selectedCliente) {
         // this.AsignarPoliza(selectedCliente);
       } else {
