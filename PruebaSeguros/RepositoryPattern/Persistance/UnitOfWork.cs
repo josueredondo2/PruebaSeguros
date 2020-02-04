@@ -18,6 +18,7 @@ namespace PruebaSeguros.RepositoryPattern.Persistance
             SeguridadLogins = new SeguridadLoginRepository(_context);
             PolizaEncabezados = new PolizaEncabezadoRepository(_context);
             TipoPoliza = new TipoPolizaRepository(_context);
+            TipoRiesgo = new TipoRiesgoRepository(_context);
             Cliente = new ClienteRepository(_context);
             PolizaXCliente = new PolizaXClienteRepository(_context);
 

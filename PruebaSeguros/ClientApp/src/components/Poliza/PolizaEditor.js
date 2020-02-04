@@ -26,10 +26,10 @@ export class PolizaEditorPage extends Component {
     selectedTipoPoliza: 0
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     this.SetearPropiedades();
-    this.CargarTipoPolizas();
-    this.CargarTipoRiesgos();
+    await this.CargarTipoPolizas();
+    await this.CargarTipoRiesgos();
   }
 
   SetearPropiedades = () => {
@@ -43,7 +43,7 @@ export class PolizaEditorPage extends Component {
           Descripcion: poliza.descripcion,
           PeriodoCoberturaMeses: poliza.periodoCoberturaMeses,
           PrecioPoliza: poliza.precioPoliza,
-          selectedTipoRiesgo: poliza.tipoRiesgo,
+          TipoRiesgo: poliza.tipoRiesgo,
           TipoPoliza: poliza.tipoPoliza,
           esNuevo: false
         });
@@ -51,6 +51,7 @@ export class PolizaEditorPage extends Component {
     }
   };
   async CargarTipoPolizas() {
+    console.log('entre')
     this.setState({ loading: true });
 
     const response = await GetTipoPolizas();
@@ -84,6 +85,7 @@ export class PolizaEditorPage extends Component {
     const response = await GetTipoRiesgo();
     if (response.ok) {
       response.json().then(data => {
+        console.log(data.dato)
         let lstTipoRiesgo = data.map(function(obj) {
           return {
             value: obj.idRiesgo,
@@ -160,7 +162,7 @@ export class PolizaEditorPage extends Component {
       Descripcion,
       PeriodoCoberturaMeses,
       PrecioPoliza,
-      selectedRiesgo,
+      selectedTipoRiesgo,
       selectedTipoPoliza
     } = this.state;
 
@@ -170,7 +172,7 @@ export class PolizaEditorPage extends Component {
       Descripcion: Descripcion,
       PeriodoCoberturaMeses: parseInt(PeriodoCoberturaMeses),
       PrecioPoliza: parseInt(PrecioPoliza),
-      TipoRiesgo: selectedRiesgo.value,
+      TipoRiesgo: selectedTipoRiesgo.value,
       TipoPoliza: selectedTipoPoliza.value
     };
 
