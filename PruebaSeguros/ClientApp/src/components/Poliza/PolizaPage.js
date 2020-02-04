@@ -159,10 +159,10 @@ export class PolizaPage extends Component {
               </h2>
             </div>
             <div className="col-8 text-right">
-              <button className="btn info" onClick={this.onClickEliminar}>
+              <button className="btn info mb-2" onClick={this.onClickEliminar}>
                 <FontAwesomeIcon icon={faTrash} />
               </button>
-              <Link className="btn success" to={SiteRutas.PolizaEditor}>
+              <Link className="btn success mb-2" to={SiteRutas.PolizaEditor}>
                 Nueva Póliza
               </Link>
               

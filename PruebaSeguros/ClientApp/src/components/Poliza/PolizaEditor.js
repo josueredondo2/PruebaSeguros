@@ -333,7 +333,6 @@ export class PolizaEditorPage extends Component {
                   id="txtPeriodoCobertura"
                   className="form-control"
                   aria-labelledby="lblPeriodoCobertura"
-                  placeholder="0.00%"
                   name="PeriodoCoberturaMeses"
                   step="1"
                   maxLength={3}
@@ -353,10 +352,10 @@ export class PolizaEditorPage extends Component {
                   type="number"
                   id="txtPrecioPoliza"
                   className="form-control"
+                  name="PrecioPoliza"
                   aria-labelledby="lblPrecioPoliza"
                   placeholder="0.00"
-                  name="PrecioPoliza"
-                  step="0.01"
+                  step="1"
                   maxLength={3}
                   onChange={this.OnChangeInput}
                   value={this.state.PrecioPoliza}

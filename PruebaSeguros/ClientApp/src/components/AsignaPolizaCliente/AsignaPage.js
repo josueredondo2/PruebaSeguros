@@ -135,7 +135,7 @@ export class AsignaPage extends Component {
             </div>
             <div className="col-8 text-right">
               <button
-                className="btn info"
+                className="btn success"
                   onClick={this.onClickAsignar}
               >
                 Asignar Póliza a Cliente
@@ -155,8 +155,11 @@ export class AsignaPage extends Component {
               >
                 {props => (
                   <div>
+                    <div className="row text-center">
+                      <div className="col-4 mt-3">
                     <SearchBar {...props.searchProps} placeholder={"Buscar Cliente"} />
-
+                    </div>
+                    </div>
                     <BootstrapTable
                       {...props.baseProps}
                       striped={true}

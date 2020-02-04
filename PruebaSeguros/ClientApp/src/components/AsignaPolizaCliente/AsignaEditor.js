@@ -216,6 +216,13 @@ export class AsignaEditorPage extends Component {
   };
 
   render() {
+    const optPaginacion = {
+      paginationSize: 4,
+      sizePerPageList: [{
+        text: '5', value: 5
+    }] // A numeric array is also available. the purpose of above example is custom the text
+      
+  };
     const columnsLstClienteXPoliza = [
       {
         dataField: "idPolizaNavigation.idPoliza",
@@ -311,8 +318,8 @@ export class AsignaEditorPage extends Component {
 
         <section className="main">
           <div className="row">
-            <div className="col-5">
-              <button className="btn info" onClick={this.onClickEliminar}>
+            <div className="col-12">
+              <button className="btn success m-3" onClick={this.onClickEliminar}>
                 Eliminar Póliza a Cliente
               </button>
               <ToolkitProvider
@@ -323,10 +330,11 @@ export class AsignaEditorPage extends Component {
               >
                 {props => (
                   <div>
-                    <SearchBar
-                      {...props.searchProps}
-                      placeholder={"Buscar Póliza"}
-                    />
+               <div className="row text-center">
+                      <div className="col-8 m-3">
+                    <SearchBar {...props.searchProps} placeholder={"Buscar Póliza de Cliente"} />
+                    </div>
+                    </div>
 
                     <BootstrapTable
                       {...props.baseProps}
@@ -338,14 +346,14 @@ export class AsignaEditorPage extends Component {
                       }
                       noDataIndication="No se encontraron registros."
                       bootstrap4
-                      pagination={paginationFactory()}
+                      pagination={paginationFactory(optPaginacion)}
                     />
                   </div>
                 )}
               </ToolkitProvider>
             </div>
-            <div className="col-5">
-              <button className="btn info" onClick={this.onClickAsignar}>
+            <div className="col-12">
+              <button className="btn success m-3" onClick={this.onClickAsignar}>
                 Asignar Póliza a Cliente
               </button>
               <ToolkitProvider
@@ -356,10 +364,11 @@ export class AsignaEditorPage extends Component {
               >
                 {props => (
                   <div>
-                    <SearchBar
-                      {...props.searchProps}
-                      placeholder={"Buscar Póliza"}
-                    />
+                  <div className="row text-center">
+                      <div className="col-8 m-3">
+                    <SearchBar {...props.searchProps} placeholder={"Buscar Póliza"} />
+                    </div>
+                    </div>
 
                     <BootstrapTable
                       {...props.baseProps}
@@ -371,7 +380,7 @@ export class AsignaEditorPage extends Component {
                       }
                       noDataIndication="No se encontraron registros."
                       bootstrap4
-                      pagination={paginationFactory()}
+                      pagination={paginationFactory(optPaginacion)}
                     />
                   </div>
                 )}
