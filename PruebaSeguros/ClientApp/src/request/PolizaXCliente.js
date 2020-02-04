@@ -1,15 +1,17 @@
 import { GetHeaderRequest, GetResponseBody } from './PathConfig';
 
 
-export const EliminarPolizaXCliente = async (Cedula,IdPoliza) => {
-    const result = await fetch(`api/PolizaXCliente/`+ Cedula, {
-        method: 'DELETE',
-        headers: GetHeaderRequest()
+export const EliminarPolizaXCliente = async (Objeto) => {
+    const result = await fetch(`api/PolizaXCliente/DeletePost`, {
+        method: 'POST',
+        headers: GetHeaderRequest(),
+        body: JSON.stringify(Objeto)
     });
     return await GetResponseBody(result);
 };
 
 export const InsertarPolizaXCliente = async (pPolizaXCliente) => {
+    console.log(1,pPolizaXCliente)
     const result = await fetch(`api/PolizaXCliente/`, {
         method: 'POST',
         headers: GetHeaderRequest(),

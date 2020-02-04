@@ -109,7 +109,7 @@ export class PolizaEditorPage extends Component {
 
   async ActualizarPoliza() {
     if (this.validarCampos()) {
-      const response = await ActualizarPoliza(this.crearObjeto());
+      const response = await ActualizarPoliza(this.CrearObjeto());
       if (response.ok) {
         response.json().then(data => {
           if (data.correcto === true) {
@@ -258,7 +258,7 @@ export class PolizaEditorPage extends Component {
               <h2>
                 <Link to={SiteRutas.Poliza}>
                   <FontAwesomeIcon icon={faChevronLeft} />
-                  {`${esNuevo ? "Nueva" : "Editar"} Poliza`}
+                  {`${esNuevo ? " Nueva" : " Editar"} Poliza`}
                 </Link>
               </h2>
             </div>

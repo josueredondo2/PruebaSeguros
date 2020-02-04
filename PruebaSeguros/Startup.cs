@@ -36,7 +36,9 @@ namespace PruebaSeguros
             });
 
             //Se agrega el dbcontext desde el appsettings
-            services.AddDbContext<TestSegurosContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
+            services.AddDbContext<TestSegurosContext>(options => 
+            options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
+
 
             //Se cambian las politicas del CORS para el jwt
             services.AddCors(options =>

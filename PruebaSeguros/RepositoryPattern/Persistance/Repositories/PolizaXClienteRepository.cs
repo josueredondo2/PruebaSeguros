@@ -13,15 +13,35 @@ namespace PruebaSeguros.RepositoryPattern.Persistance.Repositories
         }
 
   
-        public IEnumerable<PolizaXCliente> ObtenerDetallePolizaXCliente(int Cedula)
-        {
-            return TestSegurosContext.PolizaXCliente.Include(a => a.IdPolizaNavigation).Where(x => x.ClienteCedula.Equals(Cedula)).ToList();
-        }
-
+ 
         public TestSegurosContext TestSegurosContext
         {
             get { return Context as TestSegurosContext; }
         }
 
+        public IEnumerable<PolizaXCliente> ObtenerDetallePolizaXCliente(int Cedula)
+        {
+            return TestSegurosContext.PolizaXCliente.Where(x=>x.ClienteCedula.Equals(Cedula))
+             .Select(x => new PolizaXCliente
+             {
+                 ClienteCedula = x.ClienteCedula,
+                 InicioVigencia = x.InicioVigencia,
+                 IdPoliza = x.IdPoliza,
+                 IdPolizaNavigation = new PolizaEncabezado
+                 {
+                     IdPoliza = x.IdPolizaNavigation.IdPoliza,
+                     Nombre = x.IdPolizaNavigation.Nombre,
+                     Descripcion = x.IdPolizaNavigation.Descripcion,
+                     PrecioPoliza = x.IdPolizaNavigation.PrecioPoliza,
+                     PeriodoCoberturaMeses = x.IdPolizaNavigation.PeriodoCoberturaMeses,
+                     TipoPoliza = x.IdPolizaNavigation.TipoPoliza,
+                     TipoRiesgo = x.IdPolizaNavigation.TipoRiesgo,
+                     TipoPolizaNavigation = new TipoPoliza { Nombre = x.IdPolizaNavigation.TipoPolizaNavigation.Nombre },
+                     TipoRiesgoNavigation = new TipoRiesgo { Nombre = x.IdPolizaNavigation.TipoRiesgoNavigation.Nombre },
+                 }
+             }
+             ).ToList();
+
+        }
     }
 }

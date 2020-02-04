@@ -1,4 +1,5 @@
-﻿using PruebaSeguros.RepositoryPattern.Core.Domain;
+﻿using Microsoft.EntityFrameworkCore;
+using PruebaSeguros.RepositoryPattern.Core.Domain;
 using PruebaSeguros.RepositoryPattern.Core.Repositories;
 using System;
 using System.Collections.Generic;

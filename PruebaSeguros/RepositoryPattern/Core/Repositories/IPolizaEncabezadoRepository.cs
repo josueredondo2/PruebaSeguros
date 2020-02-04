@@ -1,5 +1,5 @@
 ﻿using PruebaSeguros.RepositoryPattern.Core.Domain;
-
+using System.Collections.Generic;
 
 namespace PruebaSeguros.RepositoryPattern.Core.Repositories
 {

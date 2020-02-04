@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using PruebaSeguros.RepositoryPattern.Core.Domain;
 using PruebaSeguros.RepositoryPattern.Persistance;
 
@@ -29,7 +30,8 @@ namespace PruebaSeguros.Controllers
         {
             try
             {
-                return Ok(new DTOResponse { Correcto = false, Dato = unitOfWork.PolizaXCliente.ObtenerDetallePolizaXCliente(id) });
+                var consulta = unitOfWork.PolizaXCliente.ObtenerDetallePolizaXCliente(id);
+                return Ok(new DTOResponse { Correcto = true, Dato = consulta });
 
             }
             catch (Exception ex)
@@ -45,7 +47,7 @@ namespace PruebaSeguros.Controllers
         {
             try
             {
-                PolizaXCliente Existe = unitOfWork.PolizaXCliente.Find(x => x.ClienteCedula.Equals(value.ClienteCedula) && x.IdPoliza.Equals(value)).FirstOrDefault();
+                PolizaXCliente Existe = unitOfWork.PolizaXCliente.Find(x => x.ClienteCedula.Equals(value.ClienteCedula) && x.IdPoliza.Equals(value.IdPoliza)).FirstOrDefault();
 
                 if (Existe!= null)
                 {
@@ -76,8 +78,8 @@ namespace PruebaSeguros.Controllers
         {
             try
             {
-            
-                unitOfWork.PolizaXCliente.Remove(value);
+                PolizaXCliente deleteItem = new PolizaXCliente { IdPoliza = value.IdPoliza, ClienteCedula = value.ClienteCedula };
+                unitOfWork.PolizaXCliente.Remove(deleteItem);
                 int resultado = unitOfWork.Complete();
                 if (resultado == 1)
                 {
