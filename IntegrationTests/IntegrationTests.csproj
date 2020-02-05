@@ -28,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Documents\Respaldo\PruebaSegurosAPI\PruebaSegurosAPI.csproj" />
+    <ProjectReference Include="..\..\PruebaSegurosAPI\PruebaSegurosAPI.csproj" />
   </ItemGroup>
 
 </Project>
