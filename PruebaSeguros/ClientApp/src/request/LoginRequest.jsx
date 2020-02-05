@@ -1,3 +1,4 @@
+import { GetHeaderRequest, GetResponseBody } from './PathConfig';
 
 export const LoginRequest = async (pUserName, pPassword) => {
     const data = { Usuario: pUserName, Pass: pPassword };
@@ -9,4 +10,13 @@ export const LoginRequest = async (pUserName, pPassword) => {
         }
     });
     return await result;
+};
+
+
+export const VerificaTokenValido = async () => {
+    const result = await fetch(`api/Login/VerificaTokenValido`, {
+        method: 'POST',
+        headers: GetHeaderRequest(),
+    });
+    return await GetResponseBody(result);
 };

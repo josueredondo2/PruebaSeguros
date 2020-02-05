@@ -24,9 +24,10 @@ export  class LoginPage extends Component {
       if (response.ok) {
         Notification.success("Ingreso Correcto");
         response.json().then(data => {
-          this.SaveToken(data.token);
+           this.SaveToken(data.token);
+          this.props.history.push(SiteRutas.Home);
+
         });
-        this.props.history.push(SiteRutas.Home);
       }
       else {
         if (response.status === 401 ) {
@@ -104,7 +105,7 @@ export  class LoginPage extends Component {
               <input name="username"
                 type="text"
                 className="login"
-                placeholder="email"
+                placeholder="Usuario"
                 value={username}
                 onChange={this.OnInputChanged} 
 

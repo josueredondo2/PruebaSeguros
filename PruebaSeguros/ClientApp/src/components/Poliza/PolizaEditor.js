@@ -260,7 +260,7 @@ export class PolizaEditorPage extends Component {
               <h2>
                 <Link to={SiteRutas.Poliza}>
                   <FontAwesomeIcon icon={faChevronLeft} />
-                  {`${esNuevo ? " Nueva" : " Editar"} Poliza`}
+                  {`${esNuevo ? " Nueva" : " Editar"} Póliza`}
                 </Link>
               </h2>
             </div>
@@ -326,7 +326,7 @@ export class PolizaEditorPage extends Component {
             <div className="col-6">
               <div className="form-group">
                 <label id="lblPeriodoCobertura" htmlFor="txtPeriodoCobertura">
-                  Periodo de Cobertura en Meses
+                  Cobertura de Meses
                 </label>
                 <input
                   type="number"
@@ -346,7 +346,7 @@ export class PolizaEditorPage extends Component {
             <div className="col-6">
               <div className="form-group">
                 <label id="lblPrecioPoliza" htmlFor="txtPrecioPoliza">
-                  Precio de Poliza
+                  Precio de Póliza
                 </label>
                 <input
                   type="number"
@@ -364,7 +364,7 @@ export class PolizaEditorPage extends Component {
             </div>
             <div className="col-6">
               <div className="form-group">
-                <label id="lblTipoPoliza">Tipo Poliza</label>
+                <label id="lblTipoPoliza">Tipo Póliza</label>
                 <Select
                   value={this.state.selectedTipoPoliza}
                   onChange={this.HandleChangeTipoPoliza}

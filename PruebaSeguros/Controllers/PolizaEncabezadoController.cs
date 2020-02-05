@@ -55,14 +55,11 @@ namespace PruebaSeguros.Controllers
         {
             try
             {
-                var tipoRiesgo = unitOfWork.TipoRiesgo.Get(value.TipoRiesgo);
-                if (tipoRiesgo.Nombre.Equals("Alto"))
+                if (ValidaReglaNegocio(value))
                 {
-                    if (!unitOfWork.TipoPoliza.ValidaReglaNegocio(value.TipoPoliza))
-                    {
-                        return Ok(new DTOResponse { Correcto = false, Dato = "No se puede guardar una póliza de cobertura mayor a 50% y que su riesgo sea alto." });
-                    }
+                    return Ok(new DTOResponse { Correcto = false, Dato = "No se puede guardar una póliza de cobertura mayor a 50% y que su riesgo sea alto." });
                 }
+
                 unitOfWork.PolizaEncabezados.Add(value);
                 int resultado = unitOfWork.Complete();
                 if (resultado == 1)
@@ -82,9 +79,7 @@ namespace PruebaSeguros.Controllers
             }
         }
 
-        // PUT: api/PolizaEncabezado/5
-        [HttpPut]
-        public ActionResult Put([FromBody] PolizaEncabezado value)
+        private bool ValidaReglaNegocio(PolizaEncabezado value)
         {
             try
             {
@@ -93,8 +88,27 @@ namespace PruebaSeguros.Controllers
                 {
                     if (!unitOfWork.TipoPoliza.ValidaReglaNegocio(value.TipoPoliza))
                     {
-                        return Ok(new DTOResponse { Correcto = false, Dato = "No se puede guardar una póliza de cobertura mayor a 50% y que su riesgo sea alto." });
+                        return true;
                     }
+                }
+                return false;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        // PUT: api/PolizaEncabezado/5
+        [HttpPut]
+        public ActionResult Put([FromBody] PolizaEncabezado value)
+        {
+            try
+            {
+                if (ValidaReglaNegocio(value))
+                {
+                    return Ok(new DTOResponse { Correcto = false, Dato = "No se puede guardar una póliza de cobertura mayor a 50% y que su riesgo sea alto." });
                 }
                 unitOfWork.PolizaEncabezados.Update(value);
                 int resultado = unitOfWork.Complete();

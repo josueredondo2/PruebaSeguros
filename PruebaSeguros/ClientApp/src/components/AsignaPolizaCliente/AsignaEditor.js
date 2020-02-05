@@ -234,7 +234,7 @@ export class AsignaEditorPage extends Component {
       },
       {
         dataField: "idPolizaNavigation.descripcion",
-        text: "Descripcion"
+        text: "Descripción"
       },
       {
         dataField: "idPolizaNavigation.tipoPolizaNavigation.nombre",
@@ -307,7 +307,7 @@ export class AsignaEditorPage extends Component {
                 ) : (
                   <Link to={SiteRutas.AsignaPoliza}>
                   <FontAwesomeIcon icon={faChevronLeft} />
-                  {' Asignar Poliza'}
+                  {' Asignar Póliza'}
                 </Link>
                 )}
               </h2>

@@ -69,7 +69,7 @@ namespace PruebaSeguros.Controllers
                 issuer: _config["Jwt:Issuer"],
                 audience: _config["Jwt:Issuer"],
                 claims,
-                expires: DateTime.Now.AddMinutes(10),
+                expires: DateTime.Now.AddMinutes(1),
                 signingCredentials: credentiasl
 
                 );
@@ -84,13 +84,13 @@ namespace PruebaSeguros.Controllers
         }
 
         [Authorize]
-        [HttpPost("Post")]
-        public string Post()
+        [HttpPost("VerificaTokenValido")]
+        public ActionResult VerificaTokenValido()
         {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            IList<Claim> claim = identity.Claims.ToList();
-            var userName = claim[0].Value;  
-            return "Bienvenido : " + userName;
+            //var identity = HttpContext.User.Identity as ClaimsIdentity;
+            //IList<Claim> claim = identity.Claims.ToList();
+            //var userName = claim[0].Value;  
+            return Ok();
         }
 
         [Authorize]
