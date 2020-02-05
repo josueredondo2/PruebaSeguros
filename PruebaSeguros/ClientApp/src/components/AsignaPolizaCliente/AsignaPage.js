@@ -75,7 +75,7 @@ export class AsignaPage extends Component {
         this.AsignarPoliza(selectedCliente);
       } else {
         Mensaje.advertencia(
-          "Por favor, seleccione el registro que desea eliminar."
+          "Por favor, seleccione el registro que desea modificar."
         );
       }
     };

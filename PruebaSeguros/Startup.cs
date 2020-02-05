@@ -81,10 +81,10 @@ namespace PruebaSeguros
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
-            
-            app.UseRouting();
             //Se agrega la autenticacion al proyecto
             app.UseAuthentication();
+            app.UseRouting();
+      
             //Se agrega la autorizacion al proyecto
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>

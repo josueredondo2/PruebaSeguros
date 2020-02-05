@@ -69,7 +69,7 @@ namespace PruebaSeguros.Controllers
                 issuer: _config["Jwt:Issuer"],
                 audience: _config["Jwt:Issuer"],
                 claims,
-                expires: DateTime.Now.AddMinutes(1),
+                expires: DateTime.Now.AddMinutes(20),
                 signingCredentials: credentiasl
 
                 );
